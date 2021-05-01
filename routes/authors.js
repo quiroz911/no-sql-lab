@@ -30,4 +30,37 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.get('/consulta1', async (req, res) => {
+  try {
+    let filters = {};
+    filters = {publicados: {$lte: 20}},{pais: "Colombia" };
+    const authors = await Author.find(filters);
+    res.json(authors);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.get('/consulta2', async (req, res) => {
+  try {
+    let filters = {};
+    filters = {apellido: {$exists: true}};
+    const authors = await Author.find(filters);
+    res.json(authors);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.get('/consulta3', async (req, res) => {
+  try {
+    let filters = {};
+    filters = {$or: [{pais: "Argentina"},{publicados: {$gte: 20}}]},{"apellido":1};
+    const authors = await Author.find(filters);
+    res.json(authors);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 module.exports = router;
